@@ -79,8 +79,8 @@
     <div id="editformdiv">
         <h1>Edit the details</h1>
         <form class="form editform">
-            <input type="text" name="name" placeholder="Enter your name">
-            <input type="text" name="image" placeholder="Enter your image URL">
+            <input type="text" id="name" name="name" placeholder="Enter your name">
+            <input type="text" id="image" name="image" placeholder="Enter your image URL">
             <select name="specialization" id="select">
                 <option value="">Select your specialization </option>
                 <option value="Cardiologist">Cardiologist</option>
@@ -88,12 +88,12 @@
                 <option value="Pediatrician">Pediatrician</option>
                 <option value="Psychiatrist">Psychiatrist</option>
             </select>
-            <input type="text" name="experience" placeholder="Enter your experience">
-            <input type="text" name="location" placeholder="Enter your location">
-            <input type="date" name="date" placeholder="Date">
-            <input type="number" name="slots" placeholder="Enter the slots for the day">
-            <input type="number" name="fee" placeholder="Enter your fee">
-            <button type="submit">Edit </button>
+            <input type="text" id="experience" name="experience" placeholder="Enter your experience">
+            <input type="text" id="location" name="location" placeholder="Enter your location">
+            <input type="date" id="date" name="date" placeholder="Date">
+            <input type="number" id="slots" name="slots" placeholder="Enter the slots for the day">
+            <input type="number" id="fee" name="fee" placeholder="Enter your fee">
+            <button id="editbtn">Edit </button>
         </form>
     </div>
     <div id="table">
@@ -123,7 +123,17 @@
 </body>
 
 <script>
-
+    let editformbox = document.getElementById("editformdiv")
+    let editform = document.querySelector(".editform")
+    let editforMname = document.getElementById("name")
+    let editforMimage = document.getElementById("image")
+    let editforMspecialization = document.getElementById("select")
+    let editforMexperience = document.getElementById("experience")
+    let editforMlocation = document.getElementById("location")
+    let editforMdate = document.getElementById("date")
+    let editforMslots = document.getElementById("slots")
+    let editforMfee = document.getElementById("fee")
+    let editbtn = document.getElementById("editbtn")
 
     let form = document.querySelector(".form");
     form.addEventListener("submit", (e) => {
@@ -189,54 +199,49 @@
             let edit = document.createElement("button");
             edit.style.backgroundColor = "green"
             edit.innerText = "EDIT"
-            let editformbox = document.getElementById("editformdiv")
-            let editform = document.querySelector(".editform")
             edit.addEventListener("click", () => {
                 editformbox.style.display = "block"
                 console.log(item.id)
-                editform.name.value = item.name
-                editform.image.value = item.image
-                editform.specialization.value = item.specialization
-                editform.experience.value = item.experience
-                editform.location.value = item.location
-                editform.date.value = item.date
-                editform.slots.value = item.slots
-                editform.fee.value = item.fee
+                editforMname.value = item.name
+                editforMimage.value = item.image
+                editforMspecialization.value = item.specialization
+                editforMexperience.value = item.experience
+                editforMlocation.value = item.location
+                editforMdate.value = item.date
+                editforMslots.value = item.slots
+                editforMfee.value = item.fee
 
-                let doctorname = editform.name.value
-                let doctorimage = editform.image.value
-                let doctorspecialization = editform.specialization.value
-                let doctorexperience = editform.experience.value
-                let doctorlocation = editform.location.value
-                let doctordate = editform.date.value
-                let doctorslots = editform.slots.value
-                let doctorfee = editform.fee.value
+            })
+            let doctorname = editforMname.value
+            let doctorimage = editforMimage.value
+            let doctorspecialization = editforMspecialization.value
+            let doctorexperience = editforMexperience.value
+            let doctorlocation = editforMlocation.value
+            let doctordate = editforMdate.value
+            let doctorslots = editforMslots.value
+            let doctorfee = editforMfee.value
+            // console.log(doctorname)
+            let dataobj = {};
+            if (doctorname) dataobj["name"] = doctorname
+            if (doctorimage) dataobj["image"] = doctorimage
+            if (doctorspecialization) dataobj["specialization"] = doctorspecialization
+            if (doctorexperience) dataobj["experience"] = doctorexperience
+            if (doctorlocation) dataobj["location"] = doctorlocation
+            if (doctordate) dataobj["date"] = doctordate
+            if (doctorslots) dataobj["slots"] = doctorslots
+            if (doctorfee) dataobj["fee"] = doctorfee
 
-                let data = {};
-                if (editform.name.value) data["name"] = editform
-                if (doctorimage) data["image"] = doctorimage
-                if (doctorspecialization) data["specialization"] = doctorspecialization
-                if (doctorexperience) data["experience"] = doctorexperience
-                if (doctorlocation) data["location"] = doctorlocation
-                if (doctordate) data["date"] = doctordate
-                if (doctorslots) data["slots"] = doctorslots
-                if (doctorfee) data["fee"] = doctorfee
-
-                editform.addEventListener("submit", (e) => {
-                    e.preventDefault();
-                    console.log(data)
-                    // fetch(`http://localhost:8080/appointments/${item.id}`, {
-                    //     method: "PATCH",
-                    //     headers: { "Content-type": "application/json" },
-                    //     body: JSON.stringify(data)
-                    // }).then((res) => res.json())
-                    //     .then((res) => {
-                    //         console.log(res)
-                    //     })
-                })
-
-
-
+            editbtn.addEventListener("click", (e) => {
+                e.preventDefault();
+                console.log("OK")
+                fetch(`http://localhost:8080/appointments/${item.id}`, {
+                    method: "PATCH",
+                    headers: { "Content-type": "application/json" },
+                    body: JSON.stringify(dataobj)
+                }).then((res) => res.json())
+                    .then((res) => {
+                        console.log(res)
+                    })
             })
             let Delete = document.createElement("button");
             Delete.style.backgroundColor = "red"
@@ -259,7 +264,6 @@
             tbody.append(tr)
         });
     }
-
 
 </script>
 
