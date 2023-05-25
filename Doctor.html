@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: sans-serif;
+        }
+
+        .form {
+            margin: auto;
+            width: 350px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+
+        .form input {
+            padding: 10px;
+            border-radius: 20px;
+        }
+
+        .form #select {
+            padding: 10px;
+            border-radius: 20px;
+        }
+
+        .form button {
+            border-radius: 20px;
+            padding: 10px;
+            background-color: teal;
+            color: white;
+            font-size: 20px;
+        }
+
+        #table {
+            margin-top: 20px;
+        }
+
+        #editformdiv {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <a href="index.html">Home page</a>
+        <a href="Doctor.html">Doctor's Dashboard</a>
+        <a href="Appoint.html">Book Appointments</a>
+    </nav>
+    <h1> Welcome Doctor</h1>
+    <h2> Please Fill the Appointments form with correct detials</h2>
+    <form class="form">
+        <input type="text" name="name" placeholder="Enter your name">
+        <input type="text" name="image" placeholder="Enter your image URL">
+        <select name="specialization" id="select">
+            <option value="">Select your specialization </option>
+            <option value="Cardiologist">Cardiologist</option>
+            <option value="Dermatologist">Dermatologist</option>
+            <option value="Pediatrician">Pediatrician</option>
+            <option value="Psychiatrist">Psychiatrist</option>
+        </select>
+        <input type="text" name="experience" placeholder="Enter your experience">
+        <input type="text" name="location" placeholder="Enter your location">
+        <input type="date" name="date" placeholder="Date">
+        <input type="number" name="slots" placeholder="Enter the slots for the day">
+        <input type="number" name="fee" placeholder="Enter your fee">
+        <button type="submit">submit</button>
+    </form>
+    <div id="editformdiv">
+        <h1>Edit the details</h1>
+        <form class="form editform">
+            <input type="text" name="name" placeholder="Enter your name">
+            <input type="text" name="image" placeholder="Enter your image URL">
+            <select name="specialization" id="select">
+                <option value="">Select your specialization </option>
+                <option value="Cardiologist">Cardiologist</option>
+                <option value="Dermatologist">Dermatologist</option>
+                <option value="Pediatrician">Pediatrician</option>
+                <option value="Psychiatrist">Psychiatrist</option>
+            </select>
+            <input type="text" name="experience" placeholder="Enter your experience">
+            <input type="text" name="location" placeholder="Enter your location">
+            <input type="date" name="date" placeholder="Date">
+            <input type="number" name="slots" placeholder="Enter the slots for the day">
+            <input type="number" name="fee" placeholder="Enter your fee">
+            <button type="submit">Edit </button>
+        </form>
+    </div>
+    <div id="table">
+
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Name of the Doctor</th>
+                    <th>Specialization</th>
+                    <th>experience</th>
+                    <th>location</th>
+                    <th>slots</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                    <th>Appointments</th>
+                </tr>
+            </thead>
+            <tbody id="tbody">
+
+            </tbody>
+        </table>
+    </div>
+
+
+
+</body>
+
+<script>
+
+
+    let form = document.querySelector(".form");
+    form.addEventListener("submit", (e) => {
+        e.preventDefault()
+        let data = {
+            name: form.name.value,
+            image: form.image.value,
+            specialization: form.specialization.value,
+            experience: form.experience.value,
+            location: form.location.value,
+            date: form.date.value,
+            slots: form.slots.value,
+            fee: form.fee.value
+        }
+
+        console.log(data)
+
+        fetch("http://localhost:8080/appointments", {
+            method: "POST",
+            headers: { "Content-type": "application/json" },
+            body: JSON.stringify(data)
+        }).then((res) => {
+            alert("Details Submitted successfully")
+        }).catch((err) => {
+            console.log(err)
+        })
+    })
+
+
+    //getting data in table
+    let tbody = document.getElementById("tbody")
+
+    window.addEventListener("load", () => {
+        GetData()
+    })
+
+    function GetData() {
+        fetch("http://localhost:8080/appointments", {
+        }).then((res) => res.json())
+            .then((res) => {
+                console.log(res)
+                Display(res)
+            }).catch((err) => {
+                console.log(err)
+            })
+
+    }
+
+    function Display(data) {
+        tbody.innerHTML = null
+        data.forEach((item, i) => {
+            let tr = document.createElement("tr");
+            let name = document.createElement("td");
+            name.innerText = item.name
+            let specialization = document.createElement("td");
+            specialization.innerText = item.specialization
+            let experience = document.createElement("td");
+            experience.innerText = item.experience
+            let location = document.createElement("td");
+            location.innerText = item.location
+            let slots = document.createElement("td");
+            slots.innerText = item.slots
+            let edit = document.createElement("button");
+            edit.style.backgroundColor = "green"
+            edit.innerText = "EDIT"
+            let editformbox = document.getElementById("editformdiv")
+            let editform = document.querySelector(".editform")
+            edit.addEventListener("click", () => {
+                editformbox.style.display = "block"
+                console.log(item.id)
+                editform.name.value = item.name
+                editform.image.value = item.image
+                editform.specialization.value = item.specialization
+                editform.experience.value = item.experience
+                editform.location.value = item.location
+                editform.date.value = item.date
+                editform.slots.value = item.slots
+                editform.fee.value = item.fee
+
+                let doctorname = editform.name.value
+                let doctorimage = editform.image.value
+                let doctorspecialization = editform.specialization.value
+                let doctorexperience = editform.experience.value
+                let doctorlocation = editform.location.value
+                let doctordate = editform.date.value
+                let doctorslots = editform.slots.value
+                let doctorfee = editform.fee.value
+
+                let data = {};
+                if (editform.name.value) data["name"] = editform
+                if (doctorimage) data["image"] = doctorimage
+                if (doctorspecialization) data["specialization"] = doctorspecialization
+                if (doctorexperience) data["experience"] = doctorexperience
+                if (doctorlocation) data["location"] = doctorlocation
+                if (doctordate) data["date"] = doctordate
+                if (doctorslots) data["slots"] = doctorslots
+                if (doctorfee) data["fee"] = doctorfee
+
+                editform.addEventListener("submit", (e) => {
+                    e.preventDefault();
+                    console.log(data)
+                    // fetch(`http://localhost:8080/appointments/${item.id}`, {
+                    //     method: "PATCH",
+                    //     headers: { "Content-type": "application/json" },
+                    //     body: JSON.stringify(data)
+                    // }).then((res) => res.json())
+                    //     .then((res) => {
+                    //         console.log(res)
+                    //     })
+                })
+
+
+
+            })
+            let Delete = document.createElement("button");
+            Delete.style.backgroundColor = "red"
+            Delete.innerText = "DELETE"
+            Delete.addEventListener("click", () => {
+                fetch(`http://localhost:8080/appointments/${item.id}`, {
+                    method: "DELETE",
+                }).then((res) => {
+                    GetData();
+                    alert("Doctor Deleted successfully")
+                }).catch((err) => {
+                    console.log(err)
+                })
+            })
+
+            let appointments = document.createElement("button");
+            appointments.innerText = "APPOINTMENTS"
+            appointments.style.backgroundColor = "teal"
+            tr.append(name, specialization, experience, location, slots, edit, Delete, appointments)
+            tbody.append(tr)
+        });
+    }
+
+
+</script>
+
+</html>

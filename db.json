@@ -1,0 +1,97 @@
+{
+  "users": [
+    {
+      "username": "shubh",
+      "email": "s@gmail.com",
+      "password": "8888",
+      "doctor": false,
+      "id": 2
+    },
+    {
+      "username": "shubhangisaini",
+      "email": "p@gmail.com",
+      "password": "8888",
+      "doctor": true,
+      "id": 3
+    }
+  ],
+  "appointments": [
+    {
+      "name": "Mark Johnson",
+      "image": "https://plus.unsplash.com/premium_photo-1658506671316-0b293df7c72b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8ZG9jdG9yfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60",
+      "specialization": "Pediatrician",
+      "experience": "5",
+      "location": "Chicago",
+      "date": "",
+      "slots": "6",
+      "id": 3,
+      "fee": "100"
+    },
+    {
+      "name": "Jane Doe",
+      "image": "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8ZG9jdG9yfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60",
+      "specialization": "Dermatologist",
+      "experience": 10,
+      "location": "Los Angeles",
+      "date": "2023-04-05T12:00:00.000Z",
+      "slots": 6,
+      "fee": 150,
+      "id": 4
+    },
+    {
+      "name": "Mark Johnson",
+      "image": "https://plus.unsplash.com/premium_photo-1658506671316-0b293df7c72b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8ZG9jdG9yfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60",
+      "specialization": "Pediatrician",
+      "experience": 5,
+      "location": "Chicago",
+      "date": "2023-04-06T09:30:00.000Z",
+      "slots": 8,
+      "fee": 100,
+      "id": 5
+    },
+    {
+      "name": "shubh",
+      "image": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cGVyc29ufGVufDB8fDB8fHww&auto=format&fit=crop&w=1000&q=60",
+      "specialization": "Cardiologist",
+      "experience": "7",
+      "location": "delhi",
+      "date": "2023-05-25",
+      "slots": 7,
+      "fee": "7000",
+      "id": 6
+    },
+    {
+      "name": "Jane Doe",
+      "image": "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8ZG9jdG9yfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60",
+      "specialization": "Dermatologist",
+      "experience": 10,
+      "location": "Los Angeles",
+      "date": "2023-04-05T12:00:00.000Z",
+      "slots": 4,
+      "fee": 150,
+      "id": 7
+    },
+    {
+      "name": "Mark Johnson",
+      "image": "https://plus.unsplash.com/premium_photo-1658506671316-0b293df7c72b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8ZG9jdG9yfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60",
+      "specialization": "Pediatrician",
+      "experience": 5,
+      "location": "Chicago",
+      "date": "2023-04-06T09:30:00.000Z",
+      "slots": 3,
+      "fee": 100,
+      "id": 8
+    },
+    {
+      "name": "shubh",
+      "image": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cGVyc29ufGVufDB8fDB8fHww&auto=format&fit=crop&w=1000&q=60",
+      "specialization": "Cardiologist",
+      "experience": "7",
+      "location": "delhi",
+      "date": "2023-05-25",
+      "slots": 4,
+      "fee": "7000",
+      "id": 9
+    }
+  ]
+}

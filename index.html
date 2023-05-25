@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: sans-serif;
+        }
+
+        .form {
+            margin: auto;
+            width: 350px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+
+        .form input {
+            padding: 10px;
+            border-radius: 20px;
+        }
+
+        .form button {
+            border-radius: 20px;
+            padding: 10px;
+            background-color: teal;
+            color: white;
+            font-size: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav>
+        <a href="index.html">Home page</a>
+        <a href="Doctor.html">Doctor's Dashboard</a>
+        <a href="Appoint.html">Book Appointments</a>
+    </nav>
+
+    <!-- signup -->
+    <form class="form signupform">
+        <input type="text" name="username" placeholder="Enter UserName" />
+        <input type="email" name="email" placeholder="Enter Email" />
+        <input type="password" name="password" placeholder="Enter Password" />
+        <div>
+            <label for="">Doctor</label>
+            <input class="checkbox" name="doctor" type="checkbox">
+        </div>
+
+        <button type="submit">Signup</button>
+
+    </form>
+
+    <!-- Login -->
+    <form class="form loginform">
+        <input type="email" name="email" placeholder="Enter Email" />
+        <input type="password" name="password" placeholder="Enter Password" />
+        <button type="submit">Login</button>
+
+    </form>
+
+</body>
+
+<script>
+    let signupform = document.querySelector(".signupform");
+
+    signupform.addEventListener("submit", (e) => {
+        e.preventDefault()
+        let data = {
+            username: signupform.username.value,
+            email: signupform.email.value,
+            password: signupform.password.value,
+            doctor: signupform.doctor.checked,
+        }
+
+        //    console.log(userData)
+
+        fetch("http://localhost:8080/users", {
+            method: "POST",
+            headers: { "Content-type": "application/json" },
+            body: JSON.stringify(data)
+        }).then((res) => {
+            alert("Account created succesfully!!")
+        }).catch((err) => {
+            console.log(err)
+        })
+    })
+
+    //login
+
+    let loginform = document.querySelector(".loginform");
+
+    loginform.addEventListener("submit", (e) => {
+        e.preventDefault()
+        let data = {
+            email: loginform.email.value,
+            password: loginform.password.value,
+        }
+        if (!data.email || !data.password) {
+            alert("Enter email and Password both")
+        } else {
+
+
+            fetch("http://localhost:8080/users")
+                .then((res) => res.json())
+                .then((res) => {
+                    let flag = false
+                    let el = {}
+                    res.forEach((item, i) => {
+                        if (item.email == data.email && item.password == data.password) {
+                            flag = true;
+                            el = item;
+                        }
+                    })
+                    if (flag) {
+                        alert("login successful")
+                        // console.log(el)
+                        localStorage.setItem("loggeduser", JSON.stringify(el))
+                        if (el.doctor==true) {
+                            window.location = "Doctor.html"
+                        }else{
+                            window.location = "Appoint.html"
+                        }
+
+                    } else {
+                        alert("login failed")
+                    }
+                })
+        }
+    })
+
+
+
+
+
+</script>
+
+</html>

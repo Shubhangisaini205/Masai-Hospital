@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .card-list {
+
+            width: 800px;
+            margin: auto;
+            margin-top: 50px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px
+        }
+
+        .card {
+            /* border: 1px solid red; */
+            box-shadow: rgba(255, 255, 255, 0.1) 0px 1px 1px 0px inset, rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+            width: 300px;
+            text-align: center;
+        }
+
+        .card-image img {
+            width: 100%;
+        }
+
+        .book {
+            background-color: teal;
+            padding: 5px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <a href="index.html">Home page</a>
+        <a href="Doctor.html">Doctor's Dashboard</a>
+        <a href="Appoint.html">Book Appointments</a>
+        
+    </nav>
+
+    <main id="main">
+
+    </main>
+
+
+
+</body>
+
+
+<script>
+    let mainsection = document.getElementById("main")
+
+  
+        GetData()
+    
+
+    function GetData() {
+        fetch("http://localhost:8080/appointments", {
+        }).then((res) => res.json())
+            .then((res) => {
+                console.log(res)
+                RenderData(res)
+            }).catch((err) => {
+                console.log(err)
+            })
+
+    }
+
+    function RenderData(data) {
+        let cardList = `
+        <div class="card-list">
+            ${data.map((item, i) => getCard(item.id, item.image, item.name, item.specialization, item.experience, item.location, item.date, item.slots, item.fee)).join(" ")}
+            </div>`
+
+        mainsection.innerHTML = cardList
+
+        let booknowbtns = document.querySelectorAll(".book")
+        for (btn of booknowbtns) {
+            btn.addEventListener("click", (e) => {
+                let btnId = e.target.dataset.id
+                // console.log(btnId)
+                DcreasingSlot(btnId)
+                GetData()
+            })
+        }
+
+    }
+
+    function DcreasingSlot(id) {
+        fetch(`http://localhost:8080/appointments/${id}`,)
+            .then((res) => res.json())
+            .then((res) => {
+                let data = {}
+                if (res.slots > 0) {
+                    res.slots = +res.slots - 1
+                    data.slots = res.slots
+                }
+                fetch(`http://localhost:8080/appointments/${id}`, {
+                    method: "PATCH",
+                    headers: { "Content-type": "application/json" },
+                    body: JSON.stringify(data)
+                }).then((res) => res.json())
+                    .then((res) => {
+                      console.log(res)
+                    })
+                
+            })
+
+
+
+    }
+
+    function getCard(id, image, name, specialization, experience, location, date, slots, fee) {
+        let card = `
+        <div class="card" data-id=${id}>
+        <div class="card-image">
+            <img src=${image} alt="image">
+        </div>
+        <h3>${name}</h3>
+        <p class="spec">specialization: ${specialization}</p>
+        <p class="exp">experience:${experience}</p>
+        <p class="loc">location: ${location}</p>
+        <p class="date">date: ${date}</p>
+        <p class="slots">slots: ${slots}</p>
+        <p class="fee">fee: ${fee}</p>
+        <button class="book" ${slots==0?"disabled":""}  data-id=${id}>BOOK NOW</button>
+
+    </div>
+        `
+        return card;
+    }
+</script>
+
+</html>
